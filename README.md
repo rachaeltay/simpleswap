@@ -1,9 +1,9 @@
 # Coingecko Simpleswap
 
 ## Built with
-- [eslint](https://eslint.org) to enforce good code practise
-- Referred to [Airbnb style guide](https://github.com/airbnb/javascript/tree/master/react) for good styling conventions in React
-- [Material UI](https://mui.com/) for basic components
+
+-   [eslint](https://eslint.org) to enforce good code practise
+-   [Material UI](https://mui.com/) for basic components
 
 ## Available Scripts
 

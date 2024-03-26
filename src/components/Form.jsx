@@ -48,30 +48,36 @@ const Form = ({ coins }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         // initiate exchange
+        setGet(0);
+        setSell(0);
+    };
+
+    const coinSellProps = {
+        coins,
+        coin: sellCoin,
+        updateCoin: updateSellCoin,
+        text: sell,
+        updateText: updateSell,
+        name: 'sell',
+        label: 'You sell',
+    };
+
+    const coinBuyProps = {
+        coins,
+        coin: getCoin,
+        updateCoin: updateGetCoin,
+        text: get,
+        updateText: updateGet,
+        name: 'get',
+        label: 'You get approximately',
+        readOnly: true, // Adding the readOnly prop
     };
 
     return (
         <Grid>
             <form onSubmit={handleSubmit}>
-                <CoinSelect
-                    coins={coins}
-                    coin={sellCoin}
-                    updateCoin={updateSellCoin}
-                    text={sell}
-                    updateText={updateSell}
-                    name='sell'
-                    label='You sell'
-                />
-                <CoinSelect
-                    coins={coins}
-                    coin={getCoin}
-                    updateCoin={updateGetCoin}
-                    text={get}
-                    updateText={updateGet}
-                    name='get'
-                    label='You get approximately'
-                    readOnly
-                />
+                <CoinSelect {...coinSellProps} />
+                <CoinSelect {...coinBuyProps} />
                 <Button variant='contained' type='submit'>
                     Exchange
                 </Button>
