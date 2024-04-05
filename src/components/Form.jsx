@@ -4,6 +4,7 @@ import CoinSelect from './CoinSelect';
 import ValueSelect from './ValueSelect';
 
 const Form = ({ coins }) => {
+  const itemStyle = { mt: 2, mb: 2 };
   const [sell, setSell] = useState(0);
   const [get, setGet] = useState(0);
   const [sellCoin, setSellCoin] = useState('btc');
@@ -18,29 +19,34 @@ const Form = ({ coins }) => {
 
   const recalculateGet = (val) => {
     if (val) {
-      const calculatedGet = (
-        (val / coins[sellCoin].value) *
-        coins[getCoin].value
-      ).toFixed(5);
-      setGet(calculatedGet);
+      setGet(((val / coins[sellCoin].value) * coins[getCoin].value).toFixed(5));
     }
   };
 
   const updateSell = (e) => {
-    const newValue = e.target.value;
-    setSell(newValue);
-    recalculateGet(newValue);
+    setSell(e.target.value);
+    recalculateGet(e.target.value);
   };
 
   const updateGet = (e) => {
     setGet(e.target.value);
   };
 
-  const updateCoin = (coin, setCoin, otherCoin) => {
-    if (coin === otherCoin) {
-      setCoin(sellCoin);
+  const updateSellCoin = (e) => {
+    // swap when the coin are set to the same
+    if (e.target.value === getCoin) {
+      setGetCoin(sellCoin);
     }
-    setCoin(coin);
+    setSellCoin(e.target.value);
+    recalculateGet(sell);
+  };
+
+  const updateGetCoin = (e) => {
+    // swap when the coin are set to the same
+    if (e.target.value === sellCoin) {
+      setSellCoin(getCoin);
+    }
+    setGetCoin(e.target.value);
     recalculateGet(sell);
   };
 
@@ -61,7 +67,7 @@ const Form = ({ coins }) => {
   const coinSellProps = {
     coins,
     coin: sellCoin,
-    updateCoin: (coin) => updateCoin(coin, setSellCoin, getCoin),
+    updateCoin: updateSellCoin,
   };
 
   const valueBuyProps = {
@@ -69,23 +75,23 @@ const Form = ({ coins }) => {
     updateValue: updateGet,
     name: 'get',
     label: 'You get approximately',
-    readOnly: true,
+    readOnly: true, // Adding the readOnly prop
   };
 
   const coinBuyProps = {
     coins,
     coin: getCoin,
-    updateCoin: (coin) => updateCoin(coin, setGetCoin, sellCoin),
+    updateCoin: updateGetCoin,
   };
 
   return (
     <Grid>
       <form onSubmit={handleSubmit}>
-        <Grid item sx={{ mt: 2, mb: 2 }}>
+        <Grid item sx={itemStyle}>
           <ValueSelect {...valueSellProps} />
           <CoinSelect {...coinSellProps} />
         </Grid>
-        <Grid item sx={{ mt: 2, mb: 2 }}>
+        <Grid item sx={itemStyle}>
           <ValueSelect {...valueBuyProps} />
           <CoinSelect {...coinBuyProps} />
         </Grid>

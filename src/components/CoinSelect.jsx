@@ -11,7 +11,22 @@ const CoinSelect = ({ coins, coin, updateCoin }) => {
 
   return (
     <FormControl sx={formStyle}>
-      <Select value={coin} onChange={updateCoin}>
+      <Select
+        value={coin}
+        onChange={updateCoin}
+        sx={{
+          color: 'white',
+          '& .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'white',
+          },
+          '& .MuiSvgIcon-root': {
+            color: 'white',
+          },
+          '&:hover .MuiOutlinedInput-notchedOutline': {
+            borderColor: 'white',
+          },
+        }}
+      >
         {Object.keys(coins).map((c) => (
           <MenuItem value={c} key={c}>
             {coins[c].name}
