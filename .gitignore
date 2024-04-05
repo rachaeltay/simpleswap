@@ -24,3 +24,7 @@ yarn-debug.log*
 yarn-error.log*
 
 /__tests__
+
+.vscode/*
+!.vscode/extensions.json
+.vs_code
