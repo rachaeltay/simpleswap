@@ -1,47 +1,25 @@
 import React from 'react';
-import { FormControl, Select, MenuItem, Grid, TextField } from '@mui/material';
+import { FormControl, Select, MenuItem } from '@mui/material';
 
-const CoinSelect = ({
-    coins,
-    coin,
-    text,
-    updateCoin,
-    updateText,
-    label,
-    name,
-    readOnly = false,
-}) => {
-    const itemStyle = { mt: 2, mb: 2 };
-    const formStyle = {
-        ml: 1,
-        mr: 1,
-        width: 200,
-        textAlign: 'left',
-    };
+const CoinSelect = ({ coins, coin, updateCoin }) => {
+  const formStyle = {
+    ml: 1,
+    mr: 1,
+    width: 200,
+    textAlign: 'left',
+  };
 
-    return (
-        <Grid item sx={itemStyle}>
-            <TextField
-                id='outlined-basic'
-                label={label}
-                variant='outlined'
-                type='number'
-                name={name}
-                onChange={updateText}
-                value={text}
-                InputProps={{ inputProps: { min: 0, readOnly } }}
-            />
-            <FormControl sx={formStyle}>
-                <Select value={coin} onChange={updateCoin}>
-                    {Object.keys(coins).map((c) => (
-                        <MenuItem value={c} key={c}>
-                            {coins[c].name}
-                        </MenuItem>
-                    ))}
-                </Select>
-            </FormControl>
-        </Grid>
-    );
+  return (
+    <FormControl sx={formStyle}>
+      <Select value={coin} onChange={updateCoin}>
+        {Object.keys(coins).map((c) => (
+          <MenuItem value={c} key={c}>
+            {coins[c].name}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
+  );
 };
 
 export default CoinSelect;

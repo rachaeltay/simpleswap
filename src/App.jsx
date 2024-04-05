@@ -6,20 +6,17 @@ import Form from './components/Form';
 import useCoinGecko from './helper/useCoinGecko';
 
 function App() {
-    const [data, error] = useCoinGecko('exchange_rates');
+  const [data, error] = useCoinGecko('exchange_rates');
 
-    if (error) {
-        return <div>{`Oops! There was an error: ${error.message}`}</div>;
-    }
-    if (!data) {
-        return <CircularProgress />;
-    }
-    return (
-        <div className='App'>
-            <Header />
-            <Form coins={{ ...data.rates }} />
-        </div>
-    );
+  if (error) {
+    return <div>{`Oops! There was an error: ${error.message}`}</div>;
+  }
+  return (
+    <div className='App'>
+      <Header />
+      {data ? <Form coins={{ ...data.rates }} /> : <CircularProgress />}
+    </div>
+  );
 }
 
 export default App;

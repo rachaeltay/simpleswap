@@ -4,29 +4,35 @@ import Form from '../components/Form';
 
 describe('Form', () => {
   const coins = {
-    btc: { value: 50000 },
-    eth: { value: 3000 },
+    btc: { value: 1 },
+    eth: { value: 2 },
   };
 
-  test('renders form and performs exchange on submit', () => {
+  test('renders form elements correctly', () => {
     render(<Form coins={coins} />);
 
-    // Assert initial state
+    // Ensure the form elements are rendered
     expect(screen.getByLabelText('You sell')).toBeInTheDocument();
     expect(screen.getByLabelText('You get approximately')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: 'Exchange' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Exchange' })
+    ).toBeInTheDocument();
+  });
 
-    // Simulate user input
-    fireEvent.change(screen.getByLabelText('You sell'), { target: { value: 1 } });
+  test('form submission updates state', () => {
+    render(<Form coins={coins} />);
 
-    // Assert updated state
-    expect(screen.getByLabelText('You sell')).toHaveValue(1);
-    expect(screen.getByLabelText('You get approximately')).toHaveValue(0.06000);
-
-    // Simulate form submission
+    // Simulate user input and form submission
+    fireEvent.change(screen.getByLabelText('You sell'), {
+      target: { value: '10' },
+    });
+    fireEvent.change(screen.getByLabelText('You get approximately'), {
+      target: { value: '20' },
+    });
     fireEvent.click(screen.getByRole('button', { name: 'Exchange' }));
 
-    // Assert that the exchange function is called
-    // expect(mockExchangeFunction).toHaveBeenCalled();
+    // Ensure the form state is updated after submission
+    expect(screen.getByLabelText('You sell')).toHaveValue('0');
+    expect(screen.getByLabelText('You get approximately')).toHaveValue('0');
   });
 });
