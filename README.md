@@ -2,6 +2,8 @@
 
 A modern, responsive cryptocurrency exchange simulator built with React and Material-UI (MUI). This project demonstrates advanced frontend development skills including custom theming, dark/light mode, animations, and real-time API integration.
 
+![Simpleswap](/img/simpleswap.png)
+
 ## ✨ Features
 
 ### 🎨 **Modern UI/UX**
