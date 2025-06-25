@@ -1,36 +1,36 @@
 import React from 'react';
-import { TextField } from '@mui/material';
+import { TextField, Box } from '@mui/material';
 
 const ValueSelect = ({ label, name, updateValue, text, readOnly = false }) => {
-  return (
-    <TextField
-      id='outlined-basic'
-      label={label}
-      variant='outlined'
-      type='number'
-      name={name}
-      onChange={updateValue}
-      value={text}
-      InputProps={{ inputProps: { min: 0, readOnly } }}
-      sx={{
-        color: 'white',
-        '& label.Mui-focused': {
-          color: 'white',
-        },
-        '& .MuiInputLabel-root': {
-          color: 'white',
-        },
-        '& .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'white',
-        },
-        '&:hover .MuiOutlinedInput-notchedOutline': {
-          borderColor: 'white',
-        },
-        input: {
-          color: 'white',
-        },
-      }}
-    />
-  );
+    return (
+        <Box sx={{ mb: 2 }}>
+            <TextField
+                id={`${name}-field`}
+                label={label}
+                variant='outlined'
+                type='number'
+                name={name}
+                onChange={updateValue}
+                value={text}
+                fullWidth
+                InputProps={{
+                    inputProps: {
+                        min: 0,
+                        readOnly,
+                        step: 'any',
+                    },
+                }}
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        fontSize: '1.1rem',
+                    },
+                    '& .MuiInputLabel-root': {
+                        fontSize: '1rem',
+                    },
+                }}
+            />
+        </Box>
+    );
 };
+
 export default ValueSelect;
