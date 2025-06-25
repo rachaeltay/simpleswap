@@ -3,16 +3,10 @@ import {
     AppBar,
     Toolbar,
     Typography,
-    Box,
     IconButton,
     Tooltip,
-    Chip,
 } from '@mui/material';
-import {
-    Brightness4,
-    Brightness7,
-    CurrencyExchange,
-} from '@mui/icons-material';
+import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { useTheme } from '../contexts/ThemeContext';
 
 const Header = () => {
@@ -24,28 +18,33 @@ const Header = () => {
             elevation={0}
             sx={{
                 mb: 4,
-                borderRadius: 3,
-                background: 'linear-gradient(45deg, #1976d2 30%, #42a5f5 90%)',
+                backgroundColor: 'transparent',
+                boxShadow: 'none',
             }}
         >
-            <Toolbar>
-                <Box display='flex' alignItems='center' flexGrow={1}>
-                    <CurrencyExchange sx={{ mr: 2, fontSize: 32 }} />
-                    <Typography variant='h4' component='h1' fontWeight='bold'>
-                        SimpleSwap
-                    </Typography>
-                </Box>
+            <Toolbar sx={{ px: 0 }}>
+                <Typography
+                    variant='h4'
+                    component='h1'
+                    fontWeight='600'
+                    sx={{
+                        color: 'text.primary',
+                        flexGrow: 1,
+                    }}
+                >
+                    SimpleSwap
+                </Typography>
 
                 <Tooltip
                     title={`Switch to ${isDarkMode ? 'light' : 'dark'} mode`}
                 >
                     <IconButton
                         onClick={toggleTheme}
-                        color='inherit'
                         sx={{
-                            backgroundColor: 'rgba(255,255,255,0.1)',
+                            color: 'text.secondary',
                             '&:hover': {
-                                backgroundColor: 'rgba(255,255,255,0.2)',
+                                backgroundColor: 'action.hover',
+                                color: 'text.primary',
                             },
                         }}
                     >
