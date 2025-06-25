@@ -59,38 +59,6 @@ The app will open at `http://localhost:3000`
 -   **Production**: In production, the app will attempt to fetch real-time data from CoinGecko API
 -   **API Limits**: CoinGecko has rate limits, so the app gracefully falls back to mock data if needed
 
-## 🛠️ Built With
-
--   **React 18** - Modern React with hooks
--   **Material-UI (MUI) v5** - Component library with custom theming
--   **Emotion** - CSS-in-JS styling
--   **CoinGecko API** - Real-time cryptocurrency data
--   **React Context** - State management
--   **Custom Hooks** - Reusable logic
-
-## 🎯 Portfolio Highlights
-
-### **Advanced MUI Configuration**
-
--   Custom theme with light/dark mode support
--   Component-level style overrides
--   Responsive typography system
--   Consistent design tokens
-
-### **Modern React Patterns**
-
--   Functional components with hooks
--   Custom context for theme management
--   Error boundaries and loading states
--   Debounced API calls
-
-### **Professional UX**
-
--   Smooth animations and transitions
--   Accessibility features
--   Mobile-first responsive design
--   Intuitive user interface
-
 ## 🔧 Customization
 
 ### Theme Configuration
@@ -116,33 +84,3 @@ components: {
   }
 }
 ```
-
-### Adding New Features
-
--   **New Cryptocurrencies**: Update the API endpoint in `useCoinGecko.jsx`
--   **Custom Themes**: Modify `src/theme.js` for new color schemes
--   **Additional Components**: Follow the existing pattern in `src/components/`
-
-## 🧪 Testing
-
-```bash
-# Run tests
-npm test
-
-# Run tests with coverage
-npm test -- --coverage
-```
-
-## 📦 Build
-
-```bash
-# Build for production
-npm run build
-
-# Analyze bundle size
-npm run build -- --analyze
-```
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
