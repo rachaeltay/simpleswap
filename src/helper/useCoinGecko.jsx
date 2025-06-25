@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 // Mock data for development to avoid CORS issues
 const mockData = {
@@ -26,21 +26,51 @@ const mockData = {
     },
 };
 
+// Simple cache
+const cache = new Map();
+const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
+
 const useCoinGecko = (endpoint, params = {}) => {
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const abortControllerRef = useRef(null);
 
     useEffect(() => {
-        const apiUrl = new URL(`https://api.coingecko.com/api/v3/${endpoint}`);
-        Object.entries(params || {}).forEach(([key, value]) =>
-            apiUrl.searchParams.append(key, value)
-        );
-
         const fetchData = async () => {
             try {
                 setLoading(true);
                 setError(null);
+
+                // Cancel previous request if still pending
+                if (abortControllerRef.current) {
+                    abortControllerRef.current.abort();
+                }
+
+                // Create new abort controller
+                abortControllerRef.current = new AbortController();
+
+                const apiUrl = new URL(
+                    `https://api.coingecko.com/api/v3/${endpoint}`
+                );
+                Object.entries(params || {}).forEach(([key, value]) =>
+                    apiUrl.searchParams.append(key, value)
+                );
+
+                // Check cache first (but skip cache on manual refresh)
+                const cacheKey = apiUrl.toString();
+                const cachedData = cache.get(cacheKey);
+
+                if (
+                    cachedData &&
+                    Date.now() - cachedData.timestamp < CACHE_DURATION &&
+                    refreshTrigger === 0
+                ) {
+                    setData(cachedData.data);
+                    setLoading(false);
+                    return;
+                }
 
                 // Try the real API first
                 try {
@@ -49,14 +79,29 @@ const useCoinGecko = (endpoint, params = {}) => {
                             'Content-Type': 'application/json',
                             Accept: 'application/json',
                         },
+                        signal: abortControllerRef.current.signal,
                     });
 
                     if (response.ok) {
                         const responseData = await response.json();
+
+                        // Cache the successful response
+                        cache.set(cacheKey, {
+                            data: responseData,
+                            timestamp: Date.now(),
+                        });
+
                         setData(responseData);
                         return;
+                    } else {
+                        throw new Error(
+                            `HTTP ${response.status}: ${response.statusText}`
+                        );
                     }
                 } catch (apiError) {
+                    if (apiError.name === 'AbortError') {
+                        return; // Request was cancelled
+                    }
                     console.warn(
                         'API call failed, using mock data:',
                         apiError.message
@@ -68,17 +113,31 @@ const useCoinGecko = (endpoint, params = {}) => {
                     setData(mockData);
                 }, 1000); // Simulate loading time
             } catch (err) {
-                setError(err);
-                console.error('API Error:', err);
+                if (err.name !== 'AbortError') {
+                    setError(err);
+                    console.error('API Error:', err);
+                }
             } finally {
                 setLoading(false);
             }
         };
 
         fetchData();
-    }, [endpoint, params]);
 
-    return [data, error, loading];
+        // Cleanup function to abort pending requests
+        return () => {
+            if (abortControllerRef.current) {
+                abortControllerRef.current.abort();
+            }
+        };
+    }, [endpoint, params, refreshTrigger]);
+
+    // Simple refresh function
+    const refresh = () => {
+        setRefreshTrigger((prev) => prev + 1);
+    };
+
+    return [data, error, loading, refresh];
 };
 
 export default useCoinGecko;
